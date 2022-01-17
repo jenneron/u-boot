@@ -1,0 +1,70 @@
+/dts-v1/;
+
+#include "tegra114.dtsi"
+
+/ {
+	model = "NVIDIA Tegra Note 7";
+	compatible = "nvidia,tegratab", "nvidia,tegra114";
+
+	chosen {
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		framebuffer: framebuffer@ac823000 {
+			compatible = "simple-framebuffer";
+			status = "okay";
+			reg = <0xac823000 (800 * 1280 * 8)>;
+			width = <800>;
+			height = <1300>;
+			stride = <(800 * 8)>;
+			format = "a8r8g8b8";
+		};
+	};
+
+	aliases {
+		mmc0 = "/sdhci@78000600";
+		mmc1 = "/sdhci@78000400";
+		usb0 = "/usb@7d000000";
+	};
+
+	memory {
+		device_type = "memory";
+		/* memory >= 0x37e00000 is reserved for firmware usage */
+		reg = <0x80000000 0x40000000>;
+	};
+
+	sdhci@78000400 {
+		cd-gpios = <&gpio TEGRA_GPIO(V, 2) GPIO_ACTIVE_LOW>;
+		bus-width = <4>;
+		status = "disabled";
+	};
+
+	sdhci@78000600 {
+		bus-width = <8>;
+		status = "okay";
+		non-removable;
+	};
+
+	usb@7d000000 {
+		status = "okay";
+		dr_mode = "peripheral";
+		//nvidia,vbus-gpio = <&gpio TEGRA_GPIO(N, 4) GPIO_ACTIVE_HIGH>;
+	};
+
+	clocks {
+		compatible = "simple-bus";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		clk32k_in: clock@0 {
+			compatible = "fixed-clock";
+			reg=<0>;
+			#clock-cells = <0>;
+			clock-frequency = <32768>;
+		};
+	};
+};
+
+&uartd {
+	status = "okay";
+};

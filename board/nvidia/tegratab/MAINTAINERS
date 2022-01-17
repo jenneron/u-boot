@@ -1,0 +1,6 @@
+TEGRATAB BOARD
+M:	Anton Bambura <jenneron@protonmail.com>
+S:	Maintained
+F:	board/nvidia/tegratab/
+F:	include/configs/tegratab.h
+F:	configs/tegratab_defconfig
